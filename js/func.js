@@ -20,7 +20,7 @@ function processIcon() {
             canvas.width = 16;
             canvas.height = 16;
             var context = canvas.getContext("2d");
-            context.drawImage(img, 0, 0, 16, 16, 0, 0, 16, 16);
+            context.drawImage(img, 0, 0, 16, 16);
 
             context.beginPath();
             context.moveTo(0, 16);

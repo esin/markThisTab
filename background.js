@@ -1,5 +1,5 @@
 chrome.contextMenus.create({
-	id: "mark_tab",   // <-- mandatory with event-pages
+	id: "mark_tab",
 	title: "Mark this tab!",
 	contexts: ["all"]
 });
