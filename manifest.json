@@ -1,0 +1,21 @@
+{
+	"name": "Mark this tab!",
+	"description": "Extension which marks your tabs and you can find it",
+	"version": "0.1",
+	"manifest_version": 3,
+	"permissions": [
+		"contextMenus",
+		"activeTab",
+		"scripting",
+		"<all_urls>",
+		"tab"
+	],
+	"background": {
+	  "service_worker": "background.js"
+	},
+	"icons": {
+		"48": "/icons/48.png",
+		"128": "/icons/128.png",
+		"512": "/icons/512.png"
+	}
+}
