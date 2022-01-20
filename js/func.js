@@ -1,6 +1,6 @@
 function draw(context) {
 
-    // Circle
+    // Green circle
     context.fillStyle = "#ffffff";
     context.beginPath();
     context.arc(4, 12, 5, 0, 2 * Math.PI);
