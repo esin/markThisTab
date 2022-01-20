@@ -6,9 +6,7 @@
 	"permissions": [
 		"contextMenus",
 		"activeTab",
-		"scripting",
-		"<all_urls>",
-		"tab"
+		"scripting"
 	],
 	"background": {
 	  "service_worker": "background.js"
