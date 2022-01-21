@@ -11,9 +11,20 @@
 	"background": {
 	  "service_worker": "background.js"
 	},
+	"action": {},
 	"icons": {
 		"48": "/icons/48.png",
 		"128": "/icons/128.png",
 		"512": "/icons/512.png"
+	},
+	"commands": {
+		"mark_tab": {
+			"suggested_key": {
+				"linux": "Alt+T",
+				"windows": "Alt+T",
+				"mac": "MacCtrl+Command+T"
+			},
+			"description": "Mark tab with default mark"
+		}
 	}
 }
