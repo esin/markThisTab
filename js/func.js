@@ -74,3 +74,11 @@ function processIcon() {
 
 //alert("yep, i'm working");
 processIcon();
+
+
+   //     // context.beginPath();
+    //     // context.moveTo(0, 16);
+    //     // context.lineTo(16, 16);
+    //     // context.lineWidth = 4;
+    //     // context.strokeStyle = '#ff0000';
+    //     // context.stroke();

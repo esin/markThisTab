@@ -6,10 +6,11 @@
 	"permissions": [
 		"contextMenus",
 		"activeTab",
-		"scripting"
+		"scripting",
+		"storage"
 	],
 	"background": {
-	  "service_worker": "js/background.js"
+		"service_worker": "js/background.js"
 	},
 	"action": {},
 	"icons": {
@@ -26,5 +27,9 @@
 			},
 			"description": "Mark tab with default mark"
 		}
+	},
+	"options_ui": {
+		"page": "html/options.html",
+		"open_in_tab": false
 	}
 }
