@@ -14,6 +14,12 @@ function draw(context) {
 }
 
 function processIcon() {
+
+    // chrome.storage.local.get(['lastClickTS', 'currentMarkId'], function (items) {
+    //     console.log("GET: ", items.lastClickTS);
+    //     console.log("GET currentMarkId: ", items.currentMarkId);
+    // });
+
     var el = document.querySelectorAll('head link[rel~="icon"], head link[rel~="shortcut icon"]');
 
     var faviconUrl = window.location.origin + "/favicon.ico";
@@ -27,7 +33,7 @@ function processIcon() {
         }
     }
 
-    console.log(faviconUrl);
+    // console.log(faviconUrl);
     // Remove existing favicons
     Array.prototype.forEach.call(el, function (node) {
         node.parentNode.removeChild(node);
@@ -72,13 +78,4 @@ function processIcon() {
     return true;
 };
 
-//alert("yep, i'm working");
 processIcon();
-
-
-   //     // context.beginPath();
-    //     // context.moveTo(0, 16);
-    //     // context.lineTo(16, 16);
-    //     // context.lineWidth = 4;
-    //     // context.strokeStyle = '#ff0000';
-    //     // context.stroke();

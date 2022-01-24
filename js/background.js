@@ -14,21 +14,25 @@ chrome.contextMenus.onClicked.addListener(menu => {
 });
 
 const marks = ["🟢", "🔵", "🟣", "🔴", "🟠", "🟡", "⚪", "⚫", ""];
+
 var currentMarkId = -1;
 
 chrome.action.onClicked.addListener((tab) => {
 	console.log('---BEGIN');
 	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-		chrome.storage.local.get(['lastClickTS', 'currentMarkId'], function (items) {
-			console.log("GET: ", items.lastClickTS);
-			console.log("GET currentMarkId: ", items.currentMarkId);
+		var tabUrl = tabs[0].url
+		console.log(tabUrl);
+		chrome.storage.local.get([`lastClickTS:${tabUrl}`, `currentMarkId:${tabUrl}`], function (items) {
+			// console.log("GET1: ", Object.values(items)[1]);
+			// console.log("GET: ", items.lastClickTS);
+			// console.log("GET currentMarkId: ", items.currentMarkId);
 
-			currentMarkId = items.currentMarkId == undefined ? -1 : items.currentMarkId;
-
+			currentMarkId = Object.values(items)[0] == undefined ? -1 : Object.values(items)[0];
+			var lastClickTS = Object.values(items)[1] == undefined ? -1 : Object.values(items)[1];
 			var nextMark = false;
 
 			// User clicked again - need to change badge
-			if (Date.now() <= items.lastClickTS + 1000) {
+			if (Date.now() <= lastClickTS + 1000) {
 				nextMark = true;
 			}
 
@@ -50,7 +54,6 @@ chrome.action.onClicked.addListener((tab) => {
 			}
 
 			if (nextMark) {
-				// console.log(' ' + currentMarkId + 1 > marks.length ? 0 : currentMarkId + 1 );
 				currentMarkId = currentMarkId + 1 >= marks.length ? 0 : currentMarkId + 1;
 				console.log("WTF SET currentMarkId: ", currentMarkId);
 				chrome.action.setBadgeBackgroundColor({ color: '#ffffff' }, () => {
@@ -58,13 +61,12 @@ chrome.action.onClicked.addListener((tab) => {
 				});
 			}
 
-
 			console.log("currentMarkId? ", currentMarkId);
 			var currentTS = Date.now();
 
 			chrome.storage.local.set({
-				lastClickTS: currentTS,
-				currentMarkId: currentMarkId
+				[`lastClickTS:${tabUrl}`]: currentTS,
+				[`currentMarkId:${tabUrl}`]: currentMarkId
 			}, function () {
 				console.log("SET: ", currentTS);
 				console.log("SET currentMarkId: ", currentMarkId);
