@@ -16,24 +16,32 @@ chrome.contextMenus.onClicked.addListener(menu => {
 const marks = ["🟢", "🔵", "🟣", "🔴", "🟠", "🟡", "⚪", "⚫", ""];
 
 var currentMarkId = -1;
+var nextMark = false;
+var currentURL = "";
 
 chrome.action.onClicked.addListener((tab) => {
 	console.log('---BEGIN');
 	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 		var tabUrl = tabs[0].url
+		currentURL = tabUrl;
 		console.log(tabUrl);
-		chrome.storage.local.get([`lastClickTS:${tabUrl}`, `currentMarkId:${tabUrl}`], function (items) {
-			// console.log("GET1: ", Object.values(items)[1]);
-			// console.log("GET: ", items.lastClickTS);
-			// console.log("GET currentMarkId: ", items.currentMarkId);
+		chrome.storage.local.get([`currentMarkId:${tabUrl}`, `lastClickTS:${tabUrl}`, `nextMark:${tabUrl}`], function (items) {
 
-			currentMarkId = Object.values(items)[0] == undefined ? -1 : Object.values(items)[0];
+			console.log("FIRST: ", Object.values(items)[0], Object.values(items)[1], Object.values(items)[2]);
+
 			var lastClickTS = Object.values(items)[1] == undefined ? -1 : Object.values(items)[1];
-			var nextMark = false;
+			currentMarkId = Object.values(items)[0] == undefined ? -1 : Object.values(items)[0];
+			nextMark = Object.values(items)[2] == undefined ? false : Object.values(items)[2];
+			console.log("background.js: ", lastClickTS, currentMarkId, nextMark);
+			// var dtNow = Date.now();
+			// console.log("SUB: ", dtNow, dtNow - lastClickTS, lastClickTS);
 
 			// User clicked again - need to change badge
 			if (Date.now() <= lastClickTS + 1000) {
 				nextMark = true;
+			} 
+			else {
+				nextMark = false;
 			}
 
 			console.log("next mark? ", nextMark ? "yes" : "no");
@@ -66,9 +74,10 @@ chrome.action.onClicked.addListener((tab) => {
 
 			chrome.storage.local.set({
 				[`lastClickTS:${tabUrl}`]: currentTS,
-				[`currentMarkId:${tabUrl}`]: currentMarkId
+				[`currentMarkId:${tabUrl}`]: currentMarkId,
+				[`nextMark:${tabUrl}`]: nextMark
 			}, function () {
-				console.log("SET: ", currentTS);
+				console.log("SET currentTS: ", currentTS);
 				console.log("SET currentMarkId: ", currentMarkId);
 			});
 		});
@@ -78,4 +87,12 @@ chrome.action.onClicked.addListener((tab) => {
 			files: ['js/func.js'],
 		});
 	});
+});
+
+chrome.webNavigation.onCompleted.addListener(function (details) {
+	var tabUrl = details.url;
+	chrome.storage.local.remove([`lastClickTS:${tabUrl}`, `currentMarkId:${tabUrl}`, `nextMark:${tabUrl}`], function () {
+		console.log("DELETE ITEMS");
+	});
+}, {
 });
