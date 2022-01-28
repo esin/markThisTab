@@ -2,6 +2,7 @@
 Chrome extension, which marks you tabs by small circle
 
 Every time you have a lot of tabs from one site and which have one icon, you have to switch for a long time to find what you need
+
 ![image](https://user-images.githubusercontent.com/69767/151599894-cb973dd2-c9d1-4cc2-aecf-c705393153dd.png)
 
 
