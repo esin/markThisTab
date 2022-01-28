@@ -1,4 +1,3 @@
-
 function drawMark(context, color) {
     const marksColours = ["#008000", "#0000FF", "#FF00FF", "#FF0000", "#FFA500", "#FFFF00", "#FFFFFF", "#000000"];
 
@@ -21,17 +20,15 @@ function drawMark(context, color) {
 function processIcon() {
     var tabUrl = window.location.href;
     var currentMarkId = -1;
-    chrome.storage.local.get([`currentMarkId:${tabUrl}`, `lastClickTS:${tabUrl}`, `nextMark:${tabUrl}`], function (items) {
+    chrome.storage.local.get([`currentMarkId:${tabUrl}`, `faviconUrl:${tabUrl}`, `lastClickTS:${tabUrl}`, `nextMark:${tabUrl}`], function (items) {
 
-        console.log("fun.js/FIRST: ", Object.values(items)[0], Object.values(items)[1], Object.values(items)[2]);
-
-        var lastClickTS = Object.values(items)[1] == undefined ? -1 : Object.values(items)[1];
+        // var lastClickTS = Object.values(items)[1] == undefined ? -1 : Object.values(items)[1];
         currentMarkId = Object.values(items)[0] == undefined ? -1 : Object.values(items)[0];
         nextMark = Object.values(items)[2] == undefined ? false : Object.values(items)[2];
-        console.log("func.js: ", currentMarkId, lastClickTS, nextMark);
+        // var faviconUrlStorage = Object.values(items)[3];
 
         var el = document.querySelectorAll('head link[rel~="icon"], head link[rel~="shortcut icon"]');
-
+        var originalFavIcon = document.querySelector('head link[id="markthistab_original"]');
         var faviconUrl = window.location.origin + "/favicon.ico";
 
         // var faviconUrl = 'chrome://favicon/' + request.url; // waiting https://developer.chrome.com/docs/extensions/mv3/intro/mv3-overview/
@@ -41,6 +38,18 @@ function processIcon() {
             if (el.length > 0) {
                 faviconUrl = el[0].href;
             }
+        }
+
+        // console.log("faviconUrl: ", faviconUrl);
+
+        // Save original favicon
+        if (originalFavIcon == null) {
+            var linkOriginalFavIcon = document.createElement('link');
+            linkOriginalFavIcon.href = faviconUrl;
+            linkOriginalFavIcon.id = 'markthistab_original';
+            document.getElementsByTagName('head')[0].appendChild(linkOriginalFavIcon);
+        } else {
+            faviconUrl = originalFavIcon.href;
         }
 
         // Remove existing favicons
@@ -54,18 +63,13 @@ function processIcon() {
         var context = canvas.getContext("2d");
 
         var img = document.createElement("img");
+        img.src = faviconUrl;
 
         img.addEventListener("load", function () {
-            
+
             context.drawImage(img, 0, 0, 16, 16);
 
-            if (!nextMark) {
-                if (currentMarkId > -1) {
-                    console.log("currentMarkId: ", currentMarkId);
-                    drawMark(context, currentMarkId);
-                }
-            }
-            if (nextMark) {
+            if (currentMarkId > -1) {
                 drawMark(context, currentMarkId);
             }
 
@@ -81,13 +85,7 @@ function processIcon() {
         img.addEventListener("error", function () {
 
             context.clearRect(0, 0, 16, 16);
-            if (!nextMark) {
-                if (currentMarkId > -1) {
-                    console.log("currentMarkId: ", currentMarkId);
-                    drawMark(context, currentMarkId);
-                }
-            }
-            if (nextMark) {
+            if (currentMarkId > -1) {
                 drawMark(context, currentMarkId);
             }
 
@@ -98,9 +96,6 @@ function processIcon() {
 
             document.getElementsByTagName('head')[0].appendChild(link);
         });
-
-        img.src = faviconUrl;
-
         return true;
     });
 };

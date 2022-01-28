@@ -28,9 +28,5 @@
 			},
 			"description": "Mark tab with default mark"
 		}
-	},
-	"options_ui": {
-		"page": "html/options.html",
-		"open_in_tab": false
 	}
 }
