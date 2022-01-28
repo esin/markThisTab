@@ -36,11 +36,12 @@ function processIcon() {
 
         if (el) {
             if (el.length > 0) {
-                faviconUrl = el[0].href;
+                const url = new URL(el[0].href);
+                if (url.href == window.location.origin) {
+                    faviconUrl = el[0].href;
+                }
             }
         }
-
-        // console.log("faviconUrl: ", faviconUrl);
 
         // Save original favicon
         if (originalFavIcon == null) {
