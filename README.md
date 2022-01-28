@@ -1,2 +1,4 @@
 # markThisTab
-Chrome extension, which marks tabs with red line
+Chrome extension, which marks you tabs by small circle
+
+
